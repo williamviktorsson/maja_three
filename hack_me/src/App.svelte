@@ -1,6 +1,6 @@
 <script>
 	export let name;
-	import {fade} from 'svelte/transition';
+	import { fade } from "svelte/transition";
 	let database = {
 		admin: "bruh",
 		test: "test",
@@ -10,12 +10,10 @@
 	let password = "";
 
 	let authenticated = false;
-	
+
 	$: {
 		authenticated = username in database && database[username] == password;
 	}
-
-
 </script>
 
 <main>
@@ -23,18 +21,15 @@
 	<input type="text" placeholder="Username" bind:value={username} />
 	<input type="password" placeholder="Password" bind:value={password} />
 	{#if authenticated}
-	{#if username == "admin"}
-		<p transition:fade>Whoa du hackade admin</p>
-	{:else}
-		<p transition:fade>Välkommen {username} </p>
+		{#if username == "admin"}
+			<p transition:fade>Whoa du hackade admin</p>
+		{:else}
+			<p transition:fade>Välkommen {username}</p>
+		{/if}
 	{/if}
-
-	{/if}
-
 </main>
 
 <style>
-	
 	main {
 		text-align: center;
 		padding: 1em;

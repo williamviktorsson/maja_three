@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 
 app.post('/authenticate', async (req, res) => {
     try {
-        MongoClient.connect("mongodb://127.0.0.1:27017/", async (err, client) => {
+        MongoClient.connect("mongodb://localhost:27017/", async (err, client) => {
             if (err) throw err;
             db = client.db("local");
             username = req.body.username;

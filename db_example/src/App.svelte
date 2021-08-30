@@ -14,22 +14,18 @@
 		authenticating = true;
 
 		try {
-			var xhr = new XMLHttpRequest();
-			xhr.open("POST", " http://localhost:3000/authenticate", true);
-			xhr.setRequestHeader(
-				"Content-Type",
-				"application/json;charset=UTF-8"
-			);
-			xhr.send(
-				JSON.stringify({
+			fetch("http://localhost:3000/authenticate", {
+				method: "POST", // or 'PUT'
+				headers: {
+					"Content-Type": "application/json;charset=UTF-8",
+				},
+				body: JSON.stringify({
 					username: username,
 					password: password,
-				})
-			);
-
-			xhr.onload = function () {
-				try {
-					var data = JSON.parse(this.responseText);
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
 					if (!data) throw null;
 					console.log(data);
 
@@ -39,11 +35,11 @@
 						authenticated = false;
 					}
 					authenticating = false;
-				} catch (e) {
-					console.log(e);
+				})
+				.catch((error) => {
+					console.log(error);
 					authenticating = false;
-				}
-			};
+				});
 		} catch (e) {
 			console.log(e);
 			authenticating = false;
