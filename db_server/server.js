@@ -1,30 +1,30 @@
 var express = require("express");
 const MongoClient = require('mongodb').MongoClient;
-var app = express();
+const path = require('path');
 
+var app = express();
+app.use(express.static('public'))
 app.use(express.json())
 
-app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    next();
+let database = {
+    william: "secret"
+}
+
+app.post('/authentication', async (req, res) => {
+
+    let json = {
+        authenticated: database[req.body.username]==req.body.password,
+        username: req.body.username,
+    }
+
+    return res.cookie('token', 'secret', { maxAge: 10800 }).send(JSON.stringify(json));
 });
 
-
-app.post('/authenticate', async (req, res) => {
-    try {
-        MongoClient.connect("mongodb://localhost:27017/", async (err, client) => {
-            if (err) throw err;
-            db = client.db("local");
-            username = req.body.username;
-            password = req.body.password;
-            result = await db.collection("authentication").findOne({ 'username': username, 'password': password })
-
-            return res.send(JSON.stringify({authenticated: result !=null, username: username}));
-        });
-    } catch (error) {
-        return res.send(error);
+app.get('/landing', (req, res) => {
+    if (req.headers.cookie.includes('secret')) {
+        res.sendFile(path.join(__dirname, '/landing.html'));
+    } else {
+        res.sendFile(path.join(__dirname, '/error.html'));
     }
 })
 
