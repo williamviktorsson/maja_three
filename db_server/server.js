@@ -2,32 +2,43 @@ var express = require("express");
 const MongoClient = require('mongodb').MongoClient;
 const path = require('path');
 
-var app = express();
-app.use(express.static('public'))
-app.use(express.json())
+var server = express();
+server.use(express.json())
 
 let database = {
     william: "secret"
 }
 
-app.post('/authentication', async (req, res) => {
+server.use(express.static('website'))
+
+server.post('/authentication', async (req, res) => {
 
     let json = {
         authenticated: database[req.body.username]==req.body.password,
         username: req.body.username,
     }
 
-    return res.cookie('token', 'secret', { maxAge: 10800 }).send(JSON.stringify(json));
+    if (json.authenticated == true) {
+        return res.cookie('token', 'secret', { maxAge: 10800 }).send(JSON.stringify(json));
+
+    } else {
+        return res.send(JSON.stringify(json));
+    }
+
 });
 
-app.get('/landing', (req, res) => {
-    if (req.headers.cookie.includes('secret')) {
+server.get('/landing', (req, res) => {
+
+    if (req.headers.cookie != undefined && req.headers.cookie.includes('token=secret')) {
         res.sendFile(path.join(__dirname, '/landing.html'));
     } else {
-        res.sendFile(path.join(__dirname, '/error.html'));
+        res.sendFile(path.join(__dirname, '/fail.html'));
     }
+
 })
 
-app.listen(3000, () => {
-    console.log("Server running on port 3000");
+
+
+server.listen(1337, () => {
+    console.log("Server running on port 1337");
 });
