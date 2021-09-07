@@ -13,17 +13,30 @@ server.use(express.static('website'))
 
 server.post('/authentication', async (req, res) => {
 
-    let json = {
-        authenticated: database[req.body.username]==req.body.password,
-        username: req.body.username,
+    try {
+        MongoClient.connect("mongodb://localhost:27017/", async (err, client) => {
+            if (err) throw err;
+            db = client.db("test");
+            username = req.body.username;
+            password = req.body.password;
+            result = await db.collection("authentication").findOne({ 'username': username, 'password': password })
+
+            let json = { authenticated: result != null, username: username };
+
+
+            if (json.authenticated == true) {
+                return res.cookie('token', 'secret', { maxAge: 10800 }).send(JSON.stringify(json));
+
+            } else {
+                return res.send(JSON.stringify(json));
+            }
+
+        });
+    } catch (error) {
+        return res.send(error);
     }
 
-    if (json.authenticated == true) {
-        return res.cookie('token', 'secret', { maxAge: 10800 }).send(JSON.stringify(json));
 
-    } else {
-        return res.send(JSON.stringify(json));
-    }
 
 });
 
