@@ -21,8 +21,10 @@ server.post('/authentication', async (req, res) => {
             let json = { authenticated: result != null, username: username };
 
 
+
             if (json.authenticated == true) {
-                return res.cookie('token', 'secret').send(JSON.stringify(json));
+
+                return res.cookie('token', result._id).send(JSON.stringify(json));
 
             } else {
                 return res.send(JSON.stringify(json));
@@ -32,7 +34,7 @@ server.post('/authentication', async (req, res) => {
     } catch (error) {
         return res.send(error);
     }
- 
+
 });
 
 server.get('/landing', (req, res) => {
@@ -44,6 +46,15 @@ server.get('/landing', (req, res) => {
     }
 
 })
+
+server.get('/fail', (req, res) => {
+
+
+    res.sendFile(path.join(__dirname, '/fail.html'));
+
+
+})
+
 
 
 
