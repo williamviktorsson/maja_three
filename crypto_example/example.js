@@ -17,18 +17,66 @@ let json = {
 
 // save json to DB for user
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const re_entered_password = "my_password";
 
 // To verify the same - salt (stored in DB) with same other parameters used while creating hash (1000 iterations, 64 length and sha512 digest)
 const correctHash = crypto.pbkdf2Sync(re_entered_password, json.salt, 1000, 64, 'sha512').toString('hex');
 
 // check if hash (stored in DB) and newly generated hash (newHash) are the same
-if(hash == correctHash){
+if(json.hash == correctHash){
     console.log("First password entered was correct")
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 const re_entered_password_wrong = "your_password";
 const wrongHash = crypto.pbkdf2Sync(re_entered_password_wrong, json.salt, 1000, 64, 'sha512').toString('hex');
-if(hash != wrongHash){
+if(json.hash != wrongHash){
     console.log("Second password entered was incorrect")
 }

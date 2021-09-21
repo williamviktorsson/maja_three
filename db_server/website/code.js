@@ -26,3 +26,27 @@ function handleLogin(event) {
     }))
 
 }
+
+
+function handleDelete(event) {
+    event.preventDefault();
+
+
+    fetch('http://localhost:1337/authentication', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    }).then(response => response.json().then((data) => {
+
+        if (!(data.deleted == true)) {
+            document.getElementById("error").innerHTML = "Deletion Failed"
+        } else {
+            document.getElementById("error").innerHTML = "Delete Success"
+        }
+
+    }).catch(error => {
+        console.log(error)
+    }))
+
+}
