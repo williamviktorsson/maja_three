@@ -30,7 +30,8 @@ function handleLogin(event) {
 
 function handleDelete(event) {
     event.preventDefault();
-
+    
+    console.log("ya yeet")
 
     fetch('http://localhost:1337/authentication', {
         method: 'DELETE',

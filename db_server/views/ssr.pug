@@ -1,0 +1,14 @@
+doctype html
+html
+head    
+    title Landing
+    script
+        include ../website/code.js
+
+body
+    h1 Logged in #{name}
+    form#deleteForm
+        input(type='submit' value='Deleto accounto')
+    h2#error
+    script.
+        document.getElementById("deleteForm").addEventListener("submit", handleDelete)

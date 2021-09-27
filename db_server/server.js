@@ -8,6 +8,10 @@ server.use(express.json())
 server.use(cookieParser());
 server.use(express.static('website'))
 
+// SET SSR ENGINE
+server.set('view engine', 'pug')
+
+
 server.post('/authentication', async (req, res) => {
 
     try {
@@ -56,7 +60,7 @@ server.delete('/authentication', async (req, res) => {
                 return res.send(JSON.stringify(json));
 
             } else {
-                return res.send(JSON.stringify({deleted: false,error: 'ACCOUNT_NOT_FOUND'}));
+                return res.send(JSON.stringify({ deleted: false, error: 'ACCOUNT_NOT_FOUND' }));
             }
 
         });
@@ -86,7 +90,9 @@ server.get('/fail', (req, res) => {
 })
 
 
-
+server.get('/ssr', function (req, res) {
+    res.render('ssr', { name: 'William' })
+})
 
 server.listen(1337, () => {
     console.log("Server running on port 1337");
