@@ -89,6 +89,10 @@ server.get('/fail', (req, res) => {
 
 })
 
+server.get('/test',(req,res)=>{
+    res.render('test',{title:'very cool',welcome_data: 'Welcommen'})
+})
+
 
 server.get('/ssr', function (req, res) {
     res.render('ssr', { name: 'William' })
