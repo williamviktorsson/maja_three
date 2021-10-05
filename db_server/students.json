@@ -1,0 +1,18 @@
+{
+    "Jerry": {
+        "skill": 10,
+        "interest": "cooking"
+    },
+    "Berry": {
+        "skill": 2,
+        "interest": "looking"
+    },
+    "Gerry": {
+        "skill": 2,
+        "interest": "booking"
+    },
+    "Merry": {
+        "skill": 6,
+        "interest": "ooking"
+    }
+}

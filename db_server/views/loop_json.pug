@@ -1,0 +1,17 @@
+doctype html
+html
+
+head
+    title=title
+    link(rel='stylesheet', href='styles.css')
+
+
+
+body
+    h1=header
+        each val, key in users
+            div#user
+                img(src="https://picsum.photos/200?random="+val.skill, alt="Impressive Picture")
+                p=key
+                p=val.skill
+                p=val.interest

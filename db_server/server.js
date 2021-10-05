@@ -2,7 +2,11 @@ var express = require("express");
 const MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 var cookieParser = require('cookie-parser');
+
 const path = require('path');
+
+const fs = require('fs');
+
 var server = express();
 server.use(express.json())
 server.use(cookieParser());
@@ -93,6 +97,15 @@ server.get('/test',(req,res)=>{
     res.render('test',{title:'very cool',welcome_data: 'Welcommen'})
 })
 
+server.get('/loop_json', (req, res) => {
+
+    // Example: read from file. Might as well be read from database.
+    let users = fs.readFileSync(path.join(__dirname, '/students.json'));
+
+    users = JSON.parse(users);
+
+    res.render('loop_json', { title: 'loop dat', header: 'Wilbecommen', users: users })
+})
 
 server.get('/ssr', function (req, res) {
     res.render('ssr', { name: 'William' })
