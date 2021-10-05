@@ -2,15 +2,26 @@ var express = require("express");
 const MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectId;
 var cookieParser = require('cookie-parser');
-
 const path = require('path');
-
 const fs = require('fs');
-
+const cors = require("cors");
 var server = express();
+const http = require("http").createServer(server);
+const io = require("socket.io")(http, {
+    cors: {
+        origin: "http://localhost:8100",
+        methods: ["GET", "POST"],
+        transports: ['websocket', 'polling'],
+        credentials: true
+    },
+    allowEIO3: true
+});
+
 server.use(express.json())
 server.use(cookieParser());
 server.use(express.static('website'))
+server.use(cors());
+
 
 // SET SSR ENGINE
 server.set('view engine', 'pug')
@@ -93,8 +104,8 @@ server.get('/fail', (req, res) => {
 
 })
 
-server.get('/test',(req,res)=>{
-    res.render('test',{title:'very cool',welcome_data: 'Welcommen'})
+server.get('/test', (req, res) => {
+    res.render('test', { title: 'very cool', welcome_data: 'Welcommen' })
 })
 
 server.get('/loop_json', (req, res) => {
@@ -108,9 +119,85 @@ server.get('/loop_json', (req, res) => {
 })
 
 server.get('/ssr', function (req, res) {
-    res.render('ssr', { name: 'William' })
+    res.render('ssr', { name: 'Test' })
 })
 
-server.listen(1337, () => {
+server.get("/chat", async (req, res) => {
+
+    try {
+        MongoClient.connect("mongodb://localhost:27017/", async (err, client) => {
+            if (err) throw err;
+            db = client.db("test");
+            room = req.query.room;
+            if (!room) {
+                room = "mongodb"
+            }
+            let result = await db.collection("chat").findOne({ "_id": room });
+
+            if (!result) {
+                result = {
+                    _id: room,
+                    messages: []
+                }
+            }
+
+
+            res.set('Cache-Control', 'no-store').render('chat', { name: 'Test', chats: result.messages })
+
+
+
+
+
+        });
+    } catch (error) {
+        return res.send(error);
+    }
+
+});
+
+
+io.on("connection", (socket) => {
+    socket.on("join", async (gameId) => {
+
+        try {
+            MongoClient.connect("mongodb://localhost:27017/", async (err, client) => {
+                if (err) throw err;
+                db = client.db("test");
+                let result = await db.collection("chat").findOne({ "_id": gameId });
+                if (!result) {
+                    await db.collection("chat").insertOne({ "_id": gameId, messages: [] });
+                }
+                socket.join(gameId);
+                socket.emit("joined", gameId);
+                socket.activeRoom = gameId;
+
+            });
+        } catch (error) {
+            console.error(error);
+        }
+
+    });
+    socket.on("message", (message) => {
+
+        try {
+            MongoClient.connect("mongodb://localhost:27017/", async (err, client) => {
+                if (err) throw err;
+                db = client.db("test");
+
+                db.collection("chat").updateOne({ "_id": socket.activeRoom }, {
+                    "$push": {
+                        "messages": message
+                    }
+                });
+                io.to(socket.activeRoom).emit("message", message);
+
+            });
+        } catch (error) {
+            console.error(error);
+        }
+    });
+});
+
+http.listen(1337, () => {
     console.log("Server running on port 1337");
 });
