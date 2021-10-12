@@ -64,6 +64,7 @@ server.delete('/authentication', async (req, res) => {
             db = client.db("test");
 
             let token = req.cookies['token']
+            
             let o_id = new ObjectId(token);
 
             result = await db.collection("authentication").deleteOne({ '_id': o_id })
@@ -158,7 +159,8 @@ server.get("/chat", async (req, res) => {
 
 io.on("connection", (socket) => {
     socket.on("join", async (gameId) => {
-
+        // on join event, create chat if does not exist
+        // emit joined event.
         try {
             MongoClient.connect("mongodb://localhost:27017/", async (err, client) => {
                 if (err) throw err;
@@ -167,6 +169,8 @@ io.on("connection", (socket) => {
                 if (!result) {
                     await db.collection("chat").insertOne({ "_id": gameId, messages: [] });
                 }
+
+                // join socket into room gameId, receiving all events sent to room
                 socket.join(gameId);
                 socket.emit("joined", gameId);
                 socket.activeRoom = gameId;
@@ -177,8 +181,8 @@ io.on("connection", (socket) => {
         }
 
     });
-    socket.on("message", (message) => {
 
+    socket.on("message", (message) => {
         try {
             MongoClient.connect("mongodb://localhost:27017/", async (err, client) => {
                 if (err) throw err;
@@ -189,6 +193,8 @@ io.on("connection", (socket) => {
                         "messages": message
                     }
                 });
+
+                // emit mesage to all sockets subscribed to the active room
                 io.to(socket.activeRoom).emit("message", message);
 
             });
