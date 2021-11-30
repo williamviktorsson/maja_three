@@ -12,14 +12,14 @@ class Student implements User {
         this._secret = secret;
         this._id = id;
     }
-    shout() {
+    shout():void {
         console.log("bruh my id is: " + this._id);
     }
 }
 
 class DemotivatedStudent extends Student {
 
-    override shout() {
+    override shout():void  {
         console.log("I GIVE UP! MY SECRET IS: " + this._secret)
         super.shout()
     }
@@ -55,7 +55,7 @@ class Gaming extends Team {
 
     private count: number = 0;
 
-    play() {
+    play(): void {
         let count: string = "im a gamer: " + this.count; // don't get bamboozled by local variables
         console.log(count)
         this.count+= 1.5;
