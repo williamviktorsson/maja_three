@@ -7,7 +7,9 @@ function handleLogin(event) {
     let username = data.get("username")
     let password = data.get("password")
 
-    fetch('http://localhost:1337/authentication', {
+    const domain = window.location.origin
+
+    fetch(domain + '/authentication', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -32,8 +34,9 @@ function handleDelete(event) {
     event.preventDefault();
     
     console.log("ya yeet")
+    const domain = window.location.origin
 
-    fetch('http://localhost:1337/authentication', {
+    fetch(domain + '/authentication', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json'
@@ -55,7 +58,9 @@ function handleDelete(event) {
 
 function joinChat() {
 
-    this.socket = io("http://localhost:1337", { autoConnect: false });
+    const domain = window.location.origin
+
+    this.socket = io(domain, { autoConnect: false });
 
 
     document.getElementById("inputForm").addEventListener("submit", (event)=>{
