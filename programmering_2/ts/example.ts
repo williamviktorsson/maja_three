@@ -1,3 +1,10 @@
+const readline = require("readline-sync");
+
+function input(prompt: string): any {
+    let answer = readline.question(prompt + "\n" + "> ");
+    return answer;
+}
+
 interface User {
     name: string;
     shout(): void;
@@ -12,14 +19,14 @@ class Student implements User {
         this._secret = secret;
         this._id = id;
     }
-    shout():void {
+    shout(): void {
         console.log("bruh my id is: " + this._id);
     }
 }
 
 class DemotivatedStudent extends Student {
 
-    override shout():void  {
+    override shout(): void {
         console.log("I GIVE UP! MY SECRET IS: " + this._secret)
         super.shout()
     }
@@ -58,7 +65,7 @@ class Gaming extends Team {
     play(): void {
         let count: string = "im a gamer: " + this.count; // don't get bamboozled by local variables
         console.log(count)
-        this.count+= 1.5;
+        this.count += 1.5;
     }
 
 }
@@ -101,7 +108,7 @@ class ExposedStudent extends Student {
     get secret(): string {
         return this._secret;
     }
-    
+
     set secret(secret: string) {
         this._secret = secret;
     }
@@ -110,3 +117,6 @@ class ExposedStudent extends Student {
 let exposed: ExposedStudent = new ExposedStudent("William", "I love to sauna!", 1995)
 exposed.secret = "SQL INJECT ATTACKO"
 console.log(exposed.secret)
+
+let choice = input("What´s good g?")
+console.log("Your choice: " + choice);
