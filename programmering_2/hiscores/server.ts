@@ -1,3 +1,4 @@
+import { JumpPlayer } from "./player";
 import { CreateLeaderboardRequest, CreateLeaderboardResponse, GetScoresRequest, GetScoresResponse } from "./requests";
 import { JumpScore, Score } from "./score";
 
@@ -37,7 +38,7 @@ server.get('/scores', async (req, res) => {
     let response: GetScoresResponse = new GetScoresResponse()
 
 
-    response.scores = [new JumpScore(30, new Date()), new JumpScore(15, new Date())]
+    response.scores = [new JumpScore(30, new Date(), new JumpPlayer("goku", 9001)),]
     response.success = true;
 
     return res.send(JSON.stringify(response));
