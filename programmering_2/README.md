@@ -24,7 +24,7 @@ En grej med arv är att man både kan ärva metoden och använda den precis som 
 
 # Generiska klasser och metoder.
 
-Generiska klasser och metoder tillåter att de kan användas med olika typer av datatyper. Vi behöver inte ställa explicita krav på att metoder och attribut ska vara av en specifik typ som String, int, double, list, osv.
+Generiska klasser och metoder tillåter att de kan användas med olika typer av datatyper. Vi behöver inte ställa explicita krav på att metoder och attribut ska vara av en specifik typ som string, int, double, list, osv.
 
 # Variablers och metoders synlighet och livslängd.
 
