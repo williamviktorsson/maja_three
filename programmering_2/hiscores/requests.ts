@@ -18,7 +18,6 @@ export class GetScoresResponse {
 export class SubmitScoreRequest {
     leaderboard_id: string;
     score: Score;
-    player: Player;
 }
 
 export class SubmitScoreResponse {
