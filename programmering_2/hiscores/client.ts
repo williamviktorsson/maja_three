@@ -1,7 +1,7 @@
 import { CreateLeaderboardRequest, CreateLeaderboardResponse, GetScoresRequest, GetScoresResponse } from "./requests";
 import { JumpScore, Score } from "./score";
 
-var fetch = require("node-fetch");
+import * as fetch from 'node-fetch';
 
 async function create_leaderboard() {
 

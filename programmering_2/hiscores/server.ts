@@ -2,14 +2,14 @@ import { JumpPlayer } from "./player";
 import { CreateLeaderboardRequest, CreateLeaderboardResponse, GetScoresRequest, GetScoresResponse } from "./requests";
 import { JumpScore, Score } from "./score";
 
-var express = require("express");
+import * as express from 'express';
+import * as http from 'http';
 var server = express();
-const http = require("http").createServer(server);
+const app = http.createServer(server);
 
 server.use(express.json())
 
 server.post('/leaderboard', async (req, res) => {
-
     let request: CreateLeaderboardRequest = req.body;
 
     console.log(request);
@@ -47,6 +47,6 @@ server.get('/scores', async (req, res) => {
 
 
 
-http.listen(1337, () => {
+app.listen(1337, () => {
     console.log("Server running on port 1337");
 });

@@ -3,5 +3,6 @@
     {
         "target": "esnext",
         "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-    }
+        "moduleResolution": "node"
+    },
   }
