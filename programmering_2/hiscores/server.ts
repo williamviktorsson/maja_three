@@ -41,7 +41,7 @@ server.delete('/leaderboard', async (req, res) => {
 
     let response: DeleteLeaderboardResponse = new DeleteLeaderboardResponse();
 
-    if (leaderboards.has(request.leaderboard_id)) {
+    if (!leaderboards.has(request.leaderboard_id)) {
         response.success = false;
     } else {
         leaderboards.delete(request.leaderboard_id)

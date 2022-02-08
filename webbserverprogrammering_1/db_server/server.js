@@ -43,7 +43,7 @@ server.post('/authentication', async (req, res) => {
 
             if (json.authenticated == true) {
 
-                return res.cookie('token', result._id.to()).send(JSON.stringify(json));
+                return res.cookie('token', result._id.toString()).send(JSON.stringify(json));
 
             } else {
                 return res.send(JSON.stringify(json));

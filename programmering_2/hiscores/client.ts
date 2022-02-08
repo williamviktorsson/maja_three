@@ -10,7 +10,7 @@ async function create_leaderboard(id: string, save_multiple_scores_per_player: b
     request.leaderboard_id = id;
     request.save_multiple_scores_per_player = save_multiple_scores_per_player;
 
-    await fetch(`http://localhost:1337/leaderboard`, {
+    await fetch(`http://10.100.10.39:1337/leaderboard`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=UTF-8",
@@ -26,7 +26,7 @@ async function create_leaderboard(id: string, save_multiple_scores_per_player: b
             let response: CreateLeaderboardResponse = data;
 
             var jsonPretty = JSON.stringify(response, null, 2);
-            //console.log(jsonPretty)
+            console.log(jsonPretty)
 
 
         })
@@ -42,7 +42,7 @@ async function submit_score_to_leaderboard(leaderboard_id: string, player_id: st
     request.leaderboard_id = leaderboard_id;
     request.score = new JumpScore(score, new Date(), new JumpPlayer(player_id, 9000));
 
-    await fetch(`http://localhost:1337/scores`, {
+    await fetch(`http://10.100.10.39:1337/scores`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json;charset=UTF-8",
@@ -58,7 +58,7 @@ async function submit_score_to_leaderboard(leaderboard_id: string, player_id: st
             let response: SubmitScoreResponse = data;
 
             var jsonPretty = JSON.stringify(response, null, 2);
-            //console.log(jsonPretty)
+            console.log(jsonPretty)
 
 
         })
@@ -75,7 +75,7 @@ async function get_scores_from_leaderboard(leaderboard_id: string) {
     request.start_index = 0;
     request.end_index = 20;
 
-    await fetch(`http://localhost:1337/scores?leaderboard_id=${request.leaderboard_id}&start_index=${request.start_index}&end_index=${request.end_index}`, {
+    await fetch(`http://10.100.10.39:1337/scores?leaderboard_id=${request.leaderboard_id}&start_index=${request.start_index}&end_index=${request.end_index}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json;charset=UTF-8",
@@ -103,7 +103,7 @@ async function get_ranks_for_player(id: string) {
     let request: GetRanksForPlayerRequest = new GetRanksForPlayerRequest();
     request.player = new JumpPlayer(id, 9000)
 
-    await fetch(`http://localhost:1337/ranks?player=${JSON.stringify(request.player)}`, {
+    await fetch(`http://10.100.10.39:1337/ranks?player=${JSON.stringify(request.player)}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json;charset=UTF-8",
@@ -126,21 +126,26 @@ async function get_ranks_for_player(id: string) {
 
 }
 
-create_leaderboard("willi", false)
-create_leaderboard("dompi", true)
+async function main() {
+    await create_leaderboard("willi", false)
+    await create_leaderboard("dompi", true)
 
-submit_score_to_leaderboard("willi", "willid", 15)
-submit_score_to_leaderboard("willi", "zeweid", 20)
-submit_score_to_leaderboard("willi", "miltonid", 25)
+    await submit_score_to_leaderboard("willi", "willid", 15)
+    await submit_score_to_leaderboard("willi", "zeweid", 20)
+    await submit_score_to_leaderboard("willi", "miltonid", 25)
 
-submit_score_to_leaderboard("dompi", "willid", 15)
-submit_score_to_leaderboard("dompi", "linusid", 5)
-submit_score_to_leaderboard("dompi", "emmalid", 12)
-submit_score_to_leaderboard("dompi", "domasid", 0)
-submit_score_to_leaderboard("dompi", "willid", 8)
+    await submit_score_to_leaderboard("dompi", "willid", 15)
+    await submit_score_to_leaderboard("dompi", "linusid", 5)
+    await submit_score_to_leaderboard("dompi", "emmalid", 12)
+    await submit_score_to_leaderboard("dompi", "domasid", 0)
+    await submit_score_to_leaderboard("dompi", "willid", 8)
 
 
-get_scores_from_leaderboard("willi");
-get_scores_from_leaderboard("dompi");
+    await get_scores_from_leaderboard("willi");
+    await get_scores_from_leaderboard("dompi");
 
-get_ranks_for_player("willid");
+    await get_ranks_for_player("willid");
+
+}
+
+main();
