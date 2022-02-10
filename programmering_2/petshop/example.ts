@@ -17,12 +17,13 @@ class Employee implements Person {
 
 interface Shop {
     door: Door;
+    people: Person[];
     enter(person: Person): boolean;
 }
 
 class PetShop implements Shop {
     door: Door;
-
+    people: Person[] = [];
     constructor(door: Door) {
         this.door = door;
     }
@@ -32,13 +33,26 @@ class PetShop implements Shop {
             let how_open: String = input("how would you like to open the door? (kick,force,flamethrower,key)");
             switch (how_open) {
                 case "kick":
-                    return this.door.kick()
+                    let temp: boolean = this.door.kick()
+                    if (temp) {
+                        this.people.push(person);
+                    }
+                    return temp;
                 case "force":
-                    return this.door.kick_extremely_hard();
+                    let success: boolean = this.door.kick_extremely_hard();
+                    if (success) {
+                        this.people.push(person);
+                    }
+                    return success;
                 case "flamethrower":
                     let i = person.bag.findIndex((thing) => thing instanceof FlameThrower);
                     if (i >= 0 && i < person.bag.length) {
-                        return this.door.open_with_flamethrower(person.bag[i] as FlameThrower)
+                        let flamethrower = person.bag[i] as FlameThrower;
+                        let success: boolean = this.door.open_with_flamethrower(flamethrower);
+                        if (success) {
+                            this.people.push(person);
+                        }
+                        return success;
                     }
                     return false;
                 case "key":
@@ -46,12 +60,20 @@ class PetShop implements Shop {
                     let i2 = person.keychain.findIndex((key) => key.id == this.door.lock.id);
                     if (i2 >= 0 && i2 < person.keychain.length) {
                         console.log("trying to open with the key from the keychain")
-                        return this.door.open(person.keychain[i2])
+                        let key: Key = person.keychain[i2];
+                        let success: boolean = this.door.open(key);
+                        if (success) {
+                            this.people.push(person);
+                        }
+                        return success
                     } else {
                         console.log("did not find key in keychain")
                     }
                     return false;
             }
+        } else {
+            this.people.push(person);
+            return true;
         }
     }
 
@@ -132,7 +154,7 @@ interface Key {
 }
 
 class PetKey implements Key {
-    id: string = "djurmagasinett";
+    id: string = "djurmagasinet";
 
 }
 
@@ -154,3 +176,16 @@ let shop = new PetShop(new PetDoor());
 
 while (shop.enter(zewei) != true) {
 };
+
+
+class Shopper implements Person {
+    keychain: Key[] = [];
+    bag: Item[] = [];
+    wallet: number = 1000;
+}
+
+let carl : Shopper = new Shopper();
+
+shop.enter(carl);
+
+console.log(shop.people)
