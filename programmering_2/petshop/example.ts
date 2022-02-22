@@ -166,6 +166,12 @@ class FlameThrower implements Item {
     fuel: number = 0;
 }
 
+class Shopper implements Person {
+    keychain: Key[] = [];
+    bag: Item[] = [];
+    wallet: number = 1000;
+}
+
 let zewei: Person = new Employee()
 let ft = new FlameThrower();
 ft.fuel = 20;
@@ -176,13 +182,6 @@ let shop = new PetShop(new PetDoor());
 
 while (shop.enter(zewei) != true) {
 };
-
-
-class Shopper implements Person {
-    keychain: Key[] = [];
-    bag: Item[] = [];
-    wallet: number = 1000;
-}
 
 let carl : Shopper = new Shopper();
 

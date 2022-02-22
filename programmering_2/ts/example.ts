@@ -32,9 +32,9 @@ class DemotivatedStudent extends Student {
     }
 }
 
-class SkilledStudent<Type> extends Student {
-    sport: Type;
-    constructor(name: string, secret: string, id: number, sport: Type) {
+class SkilledStudent<B> extends Student {
+    sport: B;
+    constructor(name: string, secret: string, id: number, sport: B) {
         super(name, secret, id);
         this.sport = sport;
     }
@@ -120,3 +120,9 @@ console.log(exposed.secret)
 
 let choice = input("What´s good g?")
 console.log("Your choice: " + choice);
+
+class ServerFetcher {
+    constructor(database_path: string) {
+
+    }
+}
