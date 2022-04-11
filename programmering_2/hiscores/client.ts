@@ -1,7 +1,7 @@
-import { CreateLeaderboardRequest, CreateLeaderboardResponse, GetScoresRequest, GetScoresResponse } from "./requests";
+import { CreateLeaderboardRequest, CreateLeaderboardResponse, DeleteLeaderboardRequest, GetScoresRequest, GetScoresResponse } from "./requests";
 import { JumpScore, Score } from "./score";
 
-import * as fetch from 'node-fetch';
+import fetch from 'node-fetch'; 
 
 async function create_leaderboard() {
 
@@ -11,6 +11,38 @@ async function create_leaderboard() {
 
     await fetch(`http://localhost:1337/leaderboard`, {
         method: "POST",
+        headers: {
+            "Content-Type": "application/json;charset=UTF-8",
+        },
+        body: JSON.stringify(request)
+
+
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            if (!data) throw null;
+
+            let response: CreateLeaderboardResponse = data;
+
+            let created: boolean = response.success
+
+            console.log(created);
+
+
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+
+}
+
+async function delete_leaderboard() {
+
+    let request: DeleteLeaderboardRequest = new DeleteLeaderboardRequest();
+    request.leaderboard_id = "test"
+
+    await fetch(`http://localhost:1337/leaderboard`, {
+        method: "DELETE",
         headers: {
             "Content-Type": "application/json;charset=UTF-8",
         },
@@ -68,5 +100,8 @@ async function get_scores_from_leaderboard() {
 
 }
 
-create_leaderboard()
+/* create_leaderboard()
 get_scores_from_leaderboard();
+ */
+
+create_leaderboard();

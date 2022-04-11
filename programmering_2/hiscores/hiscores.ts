@@ -9,7 +9,7 @@ export interface Hiscores {
 
     post_leaderboard(request: CreateLeaderboardRequest): CreateLeaderboardResponse;
     delete_leaderboard(request: DeleteLeaderboardRequest): DeleteLeaderboardResponse;
-
+    
     get_all_ranks_for_player(request: GetRanksForPlayerRequest): GetRanksForPlayerResponse;
 }
 
