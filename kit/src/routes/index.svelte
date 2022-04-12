@@ -1,6 +1,6 @@
 <div class="hero min-h-screen bg-base-200">
   <div class="flex-col hero-content lg:flex-row">
-    <img src="maja_huvudentre.jpg" class="max-w-sm rounded-lg shadow-2xl" />
+    <img src="/maja_huvudentre.jpg" class="max-w-sm rounded-lg shadow-2xl" />
     <div>
       <h1 class="text-5xl font-bold">Liv och lärande i framkant!</h1>
       <p class="py-6">

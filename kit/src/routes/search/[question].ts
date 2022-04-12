@@ -10,7 +10,6 @@ export async function get({ params }) {
             // answers in props matches to "export let answers in script tag"
             // params.question matches [question].svelte
             answers,
-            question: params.question,
         },
     };
 }
