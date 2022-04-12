@@ -1,5 +1,3 @@
-
-
 <script>
 	import '../app.css';
 	import { theme, THEMES } from '$lib/stores/theme';
@@ -64,6 +62,8 @@
 						<li><a href="/annat">Annat</a></li>
 						<li><a href="/wordle">Wordle</a></li>
 						<li><a href="/search">Sök</a></li>
+						<li><a href="/settings">Inställningar</a></li>
+
 						<li>
 							<a href="https://github.com/wilvik05/wilvik05.github.io">
 								<i class="fa fa-github-square" style="font-size:36px" />
@@ -84,6 +84,7 @@
 				<li><a href="/annat">Annat</a></li>
 				<li><a href="/wordle">Wordle</a></li>
 				<li><a href="/search">Sök</a></li>
+				<li><a href="/settings">Inställningar</a></li>
 			</ul>
 		</div>
 	</div>
