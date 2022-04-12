@@ -1,40 +1,8 @@
-<!-- https://kit.svelte.dev/docs/loading -->
-<script context="module">
-	export async function load({ fetch }) {
-		const response = await fetch('/api/cookie', {
-			method: 'GET' // or 'PUT'
-		});
-
-		const data = await response.json();
-
-		return {
-			props: {
-				clicks: data.clicks
-			}
-		};
-	}
-</script>
-
 <script>
-	export let clicks;
 	let show_password = false;
 </script>
 
-{clicks}
-
 <div class="flex h-screen">
-	<button
-		on:click={() => {
-			fetch('/api/cookie', {
-				method: 'POST' // or 'PUT'
-			})
-				.then((e) => e.json())
-				.then((e) => {
-					clicks = e.clicks;
-				});
-		}}
-		class="btn">CLICK ME</button
-	>
 	<div class="m-auto">
 		<form method="post">
 			<div class="flex flex-col gap-4">
