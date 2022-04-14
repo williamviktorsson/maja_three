@@ -1,13 +1,12 @@
 <!-- ERROR PAGE DISPLAYED WHEN ENDPOINTS DONT EXIST -->
 <script context="module">
 	export async function load({ error, status, session }) {
-		if (!session?.user) {
+		if (!session?.token) {
 			return {
 				status: 302,
 				redirect: '/login'
 			};
 		}
-
 		return {
 			props: {
 				title: `${status}: ${error.message}`
