@@ -1,11 +1,10 @@
 import { serialize } from 'cookie';
 import * as database from '$lib/database';
-import type { MongoClient } from 'mongodb';
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ request }) {
 	const data = await request.formData();
-	const client: MongoClient = await database.connect();
+	const client = await database.connect();
 	const db = client.db("test");
 
 	const username = data.get('username');
