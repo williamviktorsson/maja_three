@@ -1,5 +1,4 @@
 
-
 <!-- 
     Notera att du kan göra en mapp med ett namn, i detta fall wordle,
     och då kommer navigering till den mappen ladda sidan i index.html

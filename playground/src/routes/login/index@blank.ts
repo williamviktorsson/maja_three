@@ -1,15 +1,21 @@
 import { serialize } from 'cookie';
+import * as database from '$lib/database';
+import type { MongoClient } from 'mongodb';
 
 /** @type {import('@sveltejs/kit').RequestHandler} */
 export async function post({ request }) {
 	const data = await request.formData();
+	const client: MongoClient = await database.connect();
+	const db = client.db("test");
 
 	const username = data.get('username');
 	const password = data.get('password');
 
-	if (username != 'william' || password != 'maja') {
-		// return validation errors
+	const result = await db.collection("authentication").findOne({ 'username': username, 'password': password });
 
+
+	if (result == null) {
+		// return validation errors
 		return {
 			status: 400,
 			body: {
@@ -25,7 +31,7 @@ export async function post({ request }) {
 				httpOnly: true,
 				sameSite: 'strict',
 				secure: process.env.NODE_ENV === 'production',
-				maxAge: 60 // one minute
+				maxAge: 120 // two minutes
 			}),
 			location: '/'
 		},
@@ -33,4 +39,19 @@ export async function post({ request }) {
 	};
 }
 
+/** @type {import('@sveltejs/kit').RequestHandler} */
+export async function del() {
+	return {
+		headers: {
+			'Set-Cookie': serialize('token', null, {
+				path: '/',
+				httpOnly: true,
+				sameSite: 'strict',
+				secure: process.env.NODE_ENV === 'production',
+				maxAge: 0 // one minute
+			}),
+		},
+		status: 200
+	};
+}
 
