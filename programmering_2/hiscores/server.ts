@@ -68,9 +68,8 @@ server.post('/scores', async (req, res) => {
                 } else {
 
                     // check if keep multiple scores or not
-
                     if (leaderboard.save_multiple_scores_per_player) {
-                        // just save the score
+                        // TODO just save the score
                     } else {
                         // do not save multiple scores ( save only higher scores )
                         // TODO:remove all scores belonging to player with lower score than submitted :)
