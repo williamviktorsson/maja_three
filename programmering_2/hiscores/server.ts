@@ -70,25 +70,29 @@ server.post('/scores', async (req, res) => {
                     // check if keep multiple scores or not
 
                     if (leaderboard.save_multiple_scores_per_player) {
-                        leaderboard.scores.push(request.score);
+                        // just save the score
                     } else {
+                        // do not save multiple scores ( save only higher scores )
+                        // TODO:remove all scores belonging to player with lower score than submitted :)
 
-                        // remove all scores belonging to player with lower score than submitted :)
-                        leaderboard.scores = leaderboard.scores.filter((e: Score) => e.player.id !== request.score.player.id || e.value >= request.score.value)
 
+
+                        // check if a higher score already exists
                         if (leaderboard.scores.find((score: Score) => score.player.id == request.score.player.id)) {
                             // A higher score exists
                             response.success = false;
                             return res.send(JSON.stringify(response));
 
                         } else {
-                            leaderboard.scores.push(request.score);
+                            // TODO: just save the score
+
                         }
 
                     }
 
-                    leaderboard.scores.sort((a: Score, b: Score) => b.value - a.value);
+                    // TODO: Sort the leaderboard
 
+                    // get the rank index after sorting the scores
                     let index: number = leaderboard.scores.indexOf(request.score);
 
                     let result = await db.collection("leaderboards").updateOne(
@@ -128,11 +132,8 @@ server.delete('/leaderboard', async (req, res) => {
             let db = client.db("test");
 
             try {
-                let result = await db.collection("leaderboards").deleteOne(
-                    {
-                        "_id": request.leaderboard_id,
-                    })
-                response.success = result.acknowledged;
+                // TODO: DELETE LEADERBOARD AND SET SUCCESS TRUE IF ACKNOWLEDGED
+
                 return res.send(JSON.stringify(response));
             } catch (error) {
                 response.success = false;
@@ -162,16 +163,9 @@ server.get('/scores', async (req, res) => {
             let db = client.db("test");
 
             try {
-                let leaderboard = await db.collection("leaderboards").findOne(
-                    {
-                        "_id": request.leaderboard_id
-                    })
-                if (!leaderboard) {
-                    response.success = false;
-                    return res.send(JSON.stringify(response));
-                }
-
-                response.scores = leaderboard.scores.slice(request.start_index, request.end_index)
+                
+                //TODO: GET SCORES AND USE SLICE WITH START AND END INDEX ON LIST OF SCORES
+                
                 return res.send(JSON.stringify(response));
             }
             catch (error) {
@@ -209,15 +203,7 @@ server.get('/ranks', async (req, res) => {
                     return res.send(JSON.stringify(response));
                 }
 
-                for (let i = 0; i < leaderboards.length; i++) {
-                    const element = leaderboards[i];
-                    for (let j = 0; j < element.scores.length; j++) {
-                        const score: Score = element.scores[j];
-                        if (score.player.id == request.player.id) {
-                            response.ranks.push(new DefaultRank(j, element._id, score))
-                        }
-                    }
-                }
+                // TODO: GET ALL SCORES FOR PLAYER IN LIST OF LEADERBOARDS AND ADD RANKS TO RESPONSE OBJECT
 
                 response.success = true;
 
