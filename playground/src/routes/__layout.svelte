@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
 
 	import '../app.css';
 
@@ -9,7 +10,8 @@
 		});
 	}
 
-	let question = '';
+	let question = $page.params.question;
+
 </script>
 
 <svelte:head>
@@ -25,7 +27,11 @@
 	</div>
 
 	<div class="flex-none gap-2">
-		<form method="get" action="/search/{question}">
+		<form
+			on:submit|preventDefault={() => {
+				goto(`/search/${question}`);
+			}}
+		>
 			<div class="form-control">
 				<input
 					bind:value={question}

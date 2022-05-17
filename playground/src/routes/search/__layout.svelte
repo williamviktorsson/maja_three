@@ -1,19 +1,12 @@
 <script>
 	import Search from '$lib/components/Search.svelte';
-	import Spinner from '$lib/components/Spinner.svelte';
-
-	import { navigating } from '$app/stores';
 	import { page } from '$app/stores';
 </script>
 
 <main>
-	<Search question={$page.params.question} />
-
-	{#if $navigating}
-		<Spinner />
-	{:else}
-		<slot />
-	{/if}
+	<!-- 	<Search question={$page.params.question} />
+ -->
+	<slot />
 </main>
 
 <style>
