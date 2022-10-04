@@ -2,8 +2,8 @@
 	export let name;
 	import { fade } from "svelte/transition";
 	let database = {
-		admin: "bruh",
-		test: "test",
+		admin: "william",
+		test: "majarox!",
 	};
 
 	let username = "";

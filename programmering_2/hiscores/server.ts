@@ -44,8 +44,7 @@ server.delete('/leaderboard', async (req, res) => {
     if (!leaderboards.has(request.leaderboard_id)) {
         response.success = false;
     } else {
-        leaderboards.delete(request.leaderboard_id)
-        response.success = true;
+        // TODO: Remove leaderboard.
     }
 
     return res.send(JSON.stringify(response));
@@ -71,44 +70,13 @@ server.get('/scores', async (req, res) => {
         response.success = false;
     } else {
         response.success = true;
-        let leaderboard: Leaderboard = leaderboards.get(request.leaderboard_id);
-        response.scores = leaderboard.scores.slice(request.start_index, request.end_index);
+        // TODO : return the leaderboard with the correct indices
     }
 
     return res.send(JSON.stringify(response));
 
 });
 
-server.get('/ranks', async (req, res) => {
-
-    // Get requests has no body.
-    // Construct GetScoresFromLeaderboardRequest from query params.
-
-    let request: GetRanksForPlayerRequest = new GetRanksForPlayerRequest();
-    request.player = JSON.parse(req.query.player);
-
-    console.log(request);
-
-
-    let response: GetRanksForPlayerResponse = new GetRanksForPlayerResponse()
-
-    response.success = true;
-    response.ranks = []
-
-    for (let [leaderboard_id, leaderboard] of leaderboards) {
-        let scores: Score[] = leaderboard.scores;
-        for (let index = 0; index < scores.length; index++) {
-            const score: Score = scores[index];
-            if (score.player.id == request.player.id) {
-                let rank: Rank = new DefaultRank(index, leaderboard_id, score);
-                response.ranks = [rank, ...response.ranks];
-            }
-        }
-    }
-
-    return res.send(JSON.stringify(response));
-
-});
 
 server.post('/scores', async (req, res) => {
     let request: SubmitScoreRequest = req.body;
@@ -128,14 +96,13 @@ server.post('/scores', async (req, res) => {
             let index: number = leaderboard.scores.map((score) => score.player.id).indexOf(request.score.player.id);
             if (index != -1) {
                 let score: Score = leaderboard.scores[index];
-                if (score.value < request.score.value) {
-                    leaderboard.scores[index] = request.score;
-                }
+                // TODO: Update the leaderboard with the new score if it is better than the old
             } else {
-                leaderboard.scores = [request.score, ...leaderboard.scores]
+                // TODO: Update the leaderboard with the score
             }
         }
-        leaderboard.scores.sort((a, b) => b.value - a.value);
+
+        // TODO: Make sure the leaderboard is sorted
         leaderboards.set(request.leaderboard_id, leaderboard);
         let index: number = leaderboard.scores.map((score) => score).indexOf(request.score);
         let rank: Rank = new DefaultRank(index, leaderboard.id, request.score);
